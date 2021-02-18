@@ -1,0 +1,35 @@
+input::-webkit-file-upload-button {
+   font-size: .875rem;
+   margin-top: -3px;
+}
+input::-webkit-input-placeholder{
+   color:#cfd1d6!important;
+   font-size: .875rem;
+}
+input::-moz-placeholder{
+   color:#cfd1d6!important;
+   font-size: .875rem;
+}
+input:-moz-placeholder{
+   color:#cfd1d6!important;
+   font-size: .875rem;
+}
+input:-ms-input-placeholder{
+   color:#cfd1d6!important;
+   font-size: .875rem;
+}
+.form-control{
+   border-radius: .75rem;
+   font-size: .875rem;
+   display: block;
+   width: 100%;
+   height: 1.7rem;
+   padding: .18rem .75rem;
+   font-weight: 400;
+   line-height: 1.5;
+   color: #495057;
+   background-color: #fff;
+   background-clip: padding-box;
+   border: 1px solid #ced4da;
+   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
