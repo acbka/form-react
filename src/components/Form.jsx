@@ -10,41 +10,50 @@ export const Form = () => {
       branch: {
          name: "",
          validationMessage: "Please select the branch!",
-         isValid: "false",
+         isValid: true,
       },
       date: {
          date: "",
          endDate: "",
          validationMessage: "Please enter the correct date of birth!",
-         isValid: "false"
+         isValid: true,
       },
       selfie: {
          name: "",
          size: 0,
          accept: ".jpg, .jpeg, .gif, .png, .pdf",
          validationMessage: "Please check the size of the file!",
-         isValid: "false"
+         isValid: true
       },
       firstName: {
          name: "",
          validationMessage: "Please enter your first name!",
-         isValid: "false",
+         isValid: true,
       },
       lastName: {
          name: "",
          validationMessage: "Please enter your last name!",
-         isValid: "false",
+         isValid: true,
       },
       email: {
          name: "",
          validationMessage: "Please enter a valid email address!",
-         isValid: "false",
+         isValid: true,
+      },
+      mobilePhone: {
+         number: "",
+         validationMessage: "Please enter your mobile phone number!",
+         isValid: true,
+      },
+      homePhone: {
+         number: "",
+         validationMessage: "Please enter your home phone number!",
+         isValid: true,
       },
    });
 
    const updateFormField = (field, fieldKey, value) => {
       updateFormData({ ...formData, [field]: { ...formData[field], [fieldKey]: value } });
-      //console.log("field", field, "fieldKey", fieldKey, "value", value)
    };
 
    // max Date
@@ -60,23 +69,28 @@ export const Form = () => {
       if (year < 10) year = '0' + year;
    
       let endDate = year + "-" + month + "-" + day;
-     // updateFormField('date', "endDate", endDate)
-   
-
-  
 
    const setBranch = (value) => {
-      updateFormField('branch', "name", value.name)
+      updateFormField('branch', "name", value)
    }
 
    const setPhoto = (value) => {
-      console.log("kkk", value)
-      updateFormField('selfie', "name", value.name);
-      updateFormField('selfie', "size", value.size)
+      updateFormData({...formData,
+         selfie: {
+            ...formData.selfie, 
+            name: value.name,
+            size:  value.size
+         },
+      })
    }
 
    const setDateOfBirth = (value) => {
-      updateFormField('date', "date", value.name)
+      updateFormData({...formData,
+         date: { ...formData.date,
+         date: value.name,
+         endDate: endDate
+         }
+      })
    }
 
    const setFirstName = (value) => {
@@ -91,52 +105,91 @@ export const Form = () => {
       updateFormField('email', "name", value.name)
    }
 
-   const checkBranch = () => {
-      let validBranch = formData.branch.name !== "" ? true : false;
-      updateFormField("branch", "isValid", validBranch)
+   const setMobilePhone = (value) => {
+      updateFormField('mobilePhone', "number", value.name)
    }
 
-   const checkDateOfBirth = () => {
-      let validDate = formData.date.date <= endDate ? true : false;
-      updateFormField("date", "isValid", validDate)
+   const setHomePhone = (value) => {
+      updateFormField('homePhone', "number", value.name)
    }
 
-   const checkFirstName = () => {
-      let regFirstName = /(^[a-zA-Z]+)-*([a-zA-Z]*)$/i; 
-      updateFormField("firstName", "isValid", regFirstName.test(formData.firstName.name));
+   // check
+
+   const checkBranch = (value) => {
+      return value !== "";
    }
 
-   const checkLastName = () => {
-      let regLastName = /(^[a-zA-Z]+)-*'*([a-zA-Z]*)$/i;
-      updateFormField("lastName", "isValid", regLastName.test(formData.lastName.name));
+   const checkDateOfBirth = (value) => {
+      return Date.parse(value) <= Date.parse(endDate) && Date.parse(value) !== "";
    }
 
-   const checkEmail = () => {
-      let regEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
-      updateFormField("email", "isValid", regEmail.test(formData.email.name))
+   const checkPhoto = (value) => { 
+      return value > 0 && value < 1024*1024
+   }
+
+   const checkFirstName = (value) => {
+      const regFirstName = /(^[a-zA-Z]+)-*([a-zA-Z]*)$/i; 
+      return regFirstName.test(value);
+   }
+
+   const checkLastName = (value) => {
+      const regLastName = /(^[a-zA-Z]+)-*'*([a-zA-Z]*)$/i;
+      return regLastName.test(value);
+   }
+
+   const checkEmail = (value) => {
+      const regEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
+      return regEmail.test(value);
+   }
+
+   const checkMobilePhone = (value) => {
+      const regMobilePhone = /^[0-9]{2}-[0-9]{7}$/;
+      return regMobilePhone.test(value);
+   }
+
+   const checkHomePhone = (value) => {
+      const regHomePhone = /^[0-9]{2}-[0-9]{4}-[0-9]{2}-[0-9]{2}$/g;
+      return regHomePhone.test(value) || value === "";
    }
 
    const checkValidation = () => {
-      checkBranch();
-      checkDateOfBirth();
-      checkFirstName(); 
-      checkLastName(); 
-      checkEmail();
+      updateFormData({
+         branch: {
+           ...formData.branch, isValid: checkBranch(formData.branch.name)
+         },
+         date: {
+           ...formData.date, isValid: checkDateOfBirth(formData.date.date)
+         },
+         selfie: {
+            ...formData.selfie, isValid: checkPhoto(formData.selfie.size)
+          },
+         firstName: {
+         ...formData.firstName, isValid: checkFirstName(formData.firstName.name)
+         },
+         lastName: {
+         ...formData.lastName, isValid: checkLastName(formData.lastName.name)
+         },
+         email: {
+         ...formData.email, isValid: checkEmail(formData.email.name)
+         },
+         mobilePhone: {
+            ...formData.mobilePhone, isValid: checkMobilePhone(formData.mobilePhone.number)
+            },
+         homePhone: {
+            ...formData.homePhone, isValid: checkHomePhone(formData.homePhone.number)
+            },
+       })
    }
-   //console.log("branch", formData.branch)
-     // console.log("fn", formData.firstName)
-      //console.log("ln", formData.lastName)
-     // console.log("email", formData.email)
-     console.log("data", formData)
+console.log(formData.mobilePhone)
    return (
       <div>
-         <form className="form-body p-5  mb-3" method="POST" name="form">
+         <form className="form-body" method="POST" name="form">
             <h4 className="form-header">Before You Begin</h4>
-            <GroupSelect setData={setBranch} name="branch" labelText="Please select the NZLH Branch Closest To You" validationMessage={formData.branch.validationMessage}></GroupSelect>
+            <GroupSelect setData={setBranch} name="branch" labelText="Please select the NZLH Branch Closest To You" validationMessage={formData.branch.validationMessage} isValid={formData.branch.isValid}></GroupSelect>
             <h4 className="form-header">Personal Data</h4>
             <p className="form-text">Before you start please have ready, your passport, birth sertificate, driver's license and any proof of your qualifications.</p>
-            <GroupInput setData={setDateOfBirth} name="date" labelText="Birth Date" type="date" validationMessage={formData.date.validationMessage} maxDate={endDate}></GroupInput>
-            <GroupInput setData={setPhoto} name="selfie" labelText="Take a selfie for your file - [Files of type: jpg, jpeg, gif, png & pdf] (Limited to 1MB)" type="file" validationMessage={formData.selfie.validationMessage} accept={formData.selfie.accept}></GroupInput>
+            <GroupInput setData={setDateOfBirth} name="date" labelText="Birth Date" type="date" validationMessage={formData.date.validationMessage} maxDate={endDate} isValid={formData.date.isValid}></GroupInput>
+            <GroupInput setData={setPhoto} name="selfie" labelText="Take a selfie for your file - [Files of type: jpg, jpeg, gif, png & pdf] (Limited to 1MB)" type="file" validationMessage={formData.selfie.validationMessage} accept={formData.selfie.accept} isValid={formData.selfie.isValid}></GroupInput>
 
             
             <div className="row">
@@ -145,8 +198,8 @@ export const Form = () => {
             </div>
             <GroupInput setData={setEmail} name="email-adress" labelText="Email address" type="email" validationMessage={formData.email.validationMessage} isValid={formData.email.isValid} placeholder="j.smith@example.com"></GroupInput>
             <div className="row">
-               <GroupInput name="mobile-phone" labelText="Mobile phone" type="text" validationMessage="Please enter your mobile phone number!" placeholder="__-_______"></GroupInput>
-               <GroupInput name="home-phone" labelText="Home phone" type="text" validationMessage="Please enter your home phone number!" placeholder="__-____-__-__" sup="false" required="false"></GroupInput>
+               <GroupInput setData={setMobilePhone} name="mobile-phone" labelText="Mobile phone" type="text" validationMessage={formData.mobilePhone.validationMessage} isValid={formData.mobilePhone.isValid} placeholder="__-_______"></GroupInput>
+               <GroupInput setData={setHomePhone} name="home-phone" labelText="Home phone" type="text" validationMessage={formData.homePhone.validationMessage} isValid={formData.homePhone.isValid}  placeholder="__-____-__-__" sup={false} required="false"></GroupInput>
             </div>
             <Button startValidation={checkValidation}></Button>
          </form>

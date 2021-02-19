@@ -1,6 +1,6 @@
 import { Select } from './Select';
 
-export const GroupSelect = ({setData, name, labelText, validationMessage, sup="true", isValid="false"}) => {
+export const GroupSelect = ({setData, name, labelText, validationMessage, sup="true", isValid}) => {
 
 
    return (

@@ -1,7 +1,7 @@
 import { Input } from './Input';
 import '../css/groupInput.css'
 
-export const GroupInput = ({setData, name, labelText, type, validationMessage, placeholder, maxLength, sup="true", isValid="false", maxDate, accept}) => {
+export const GroupInput = ({setData, name, labelText, type, validationMessage, placeholder, maxLength, sup=true, isValid, maxDate, accept}) => {
 
    return (
       <div className="form-group">

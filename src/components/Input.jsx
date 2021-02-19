@@ -7,7 +7,6 @@ export const Input = ({setInputData, id, name, type, placeholder, maxLength, req
    }
 
    const handleChange = (e) => {
-      
       if (type === "file") {
          value.size = e.target.files[0].size;
          value.name = e.target.files[0].name;
